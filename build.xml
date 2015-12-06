@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<project name="FatJar cqa.jar (experimental)" default="main" basedir=".">
+    <!-- this file was created by Fat-Jar Eclipse Plug-in -->
+    <!-- the ANT-Export is in a very early stage, so this -->
+    <!-- is only experimental, ANT 1.6 or above is        -->
+    <!-- required, feedback is always welcome:            -->
+    <!--       http://sourceforge.net/projects/fjep       -->
+    <!-- uncomment the following lines if using ANT outside Eclipse -->
+    <!--
+        <property name="fjepPath" value="reference:file:plugins/net.sf.fjep.fatjar_0.0.32.jarfatjar.jar"/>
+        <taskdef name="fatjar.build" classname="net.sf.fjep.anttask.FJBuildTask" classpath="${fjepPath}"/>
+        <typedef name="fatjar.manifest" classname="net.sf.fjep.anttask.FJManifestType" classpath="${fjepPath}"/>
+        <typedef name="fatjar.exclude" classname="net.sf.fjep.anttask.FJExcludeType" classpath="${fjepPath}"/>
+        <typedef name="fatjar.jarsource" classname="net.sf.fjep.anttask.FJJarSourceType" classpath="${fjepPath}"/>
+        <typedef name="fatjar.filesource" classname="net.sf.fjep.anttask.FJFileSourceType" classpath="${fjepPath}"/>
+    -->
+    <!-- uncomment the above lines to use ANT outside of Eclipse -->
+    <target name="main">
+        <fatjar.build output="cqa.jar">
+            <fatjar.manifest mainclass="com.ydjbuaa.npl.cqa.driver.CQADriver"/>
+            <fatjar.filesource path="E:\Projects\CQA\cqa-mater\CQA\target\classes" relpath=""/>
+            <fatjar.filesource path="E:\Projects\CQA\xgboost\java\xgboost4j" relpath=""/>
+            <fatjar.filesource path="E:\Projects\CQA\xgboost\java\xgboost4j\target\classes" relpath=""/>
+            <fatjar.filesource path="E:\Projects\CQA\xgboost\java\xgboost4j\target\classes" relpath=""/>
+            <fatjar.jarsource file="E:\ProgramSoft\eclipse\plugins\org.junit_4.12.0.v201504281640\junit.jar" relpath=""/>
+            <fatjar.jarsource file="E:\ProgramSoft\eclipse\plugins\org.hamcrest.core_1.3.0.v201303031735.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\slf4j\slf4j-simple\1.5.6\slf4j-simple-1.5.6.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\slf4j\slf4j-api\1.5.6\slf4j-api-1.5.6.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\solr\solr-solrj\4.10.0\solr-solrj-4.10.0.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\commons-io\commons-io\2.3\commons-io-2.3.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\httpcomponents\httpclient\4.3.1\httpclient-4.3.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\httpcomponents\httpcore\4.3\httpcore-4.3.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\httpcomponents\httpmime\4.3.1\httpmime-4.3.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\zookeeper\zookeeper\3.4.6\zookeeper-3.4.6.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\codehaus\woodstox\wstx-asl\3.2.7\wstx-asl-3.2.7.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\noggit\noggit\0.5\noggit-0.5.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\javax\servlet\servlet-api\2.5\servlet-api-2.5.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\solr\solr-core\1.4.0\solr-core-1.4.0.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\lucene\lucene-analyzers\2.9.1\lucene-analyzers-2.9.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\lucene\lucene-core\2.9.1\lucene-core-2.9.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\lucene\lucene-highlighter\2.9.1\lucene-highlighter-2.9.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\lucene\lucene-queries\2.9.1\lucene-queries-2.9.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\lucene\lucene-snowball\2.9.1\lucene-snowball-2.9.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\lucene\lucene-memory\2.9.1\lucene-memory-2.9.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\lucene\lucene-misc\2.9.1\lucene-misc-2.9.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\lucene\lucene-spellchecker\2.9.1\lucene-spellchecker-2.9.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\commons-httpclient\commons-httpclient\3.1\commons-httpclient-3.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\commons-codec\commons-codec\1.3\commons-codec-1.3.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\commons-fileupload\commons-fileupload\1.2.1\commons-fileupload-1.2.1.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\solr\solr-commons-csv\1.4.0\solr-commons-csv-1.4.0.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\woodstox\wstx-asl\3.2.7\wstx-asl-3.2.7.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\apache\geronimo\specs\geronimo-stax-api_1.0_spec\1.0.1\geronimo-stax-api_1.0_spec-1.0.1.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\anjs-seg\ansj_seg-2.0.8-min.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\anjs-seg\nlp-lang-1.0.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\anjs-seg\tree_split-1.4.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\ner\joda-time.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\ner\jollyday-0.4.7.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\ner\stanford-ner-3.5.2-javadoc.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\ner\stanford-ner-3.5.2-sources.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\ner\stanford-ner-3.5.2.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\ner\stanford-ner-resources.jar" relpath=""/>
+            <fatjar.jarsource file="E:\Projects\CQA\cqa-mater\CQA\extern-jars\ner\stanford-ner.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\junit\junit\4.11\junit-4.11.jar" relpath=""/>
+            <fatjar.jarsource file="C:\Users\admin\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar" relpath=""/>
+        </fatjar.build>
+    </target>
+</project>

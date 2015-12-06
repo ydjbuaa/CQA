@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/xgboost4j"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/anjs-seg/ansj_seg-2.0.8-min.jar"/>
+	<classpathentry kind="lib" path="lib/anjs-seg/nlp-lang-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/anjs-seg/tree_split-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/ner/joda-time.jar"/>
+	<classpathentry kind="lib" path="lib/ner/jollyday-0.4.7.jar"/>
+	<classpathentry kind="lib" path="lib/ner/stanford-ner-3.5.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/ner/stanford-ner-3.5.2-sources.jar"/>
+	<classpathentry kind="lib" path="lib/ner/stanford-ner-3.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/ner/stanford-ner-resources.jar"/>
+	<classpathentry kind="lib" path="lib/ner/stanford-ner.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
