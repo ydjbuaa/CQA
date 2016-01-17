@@ -102,13 +102,14 @@ public class Q2Item implements Comparable<Q2Item>{
 		 
 		  //if(2-1==1) return 1;
 		  
-		  float preScore=this.getPredictValue();
+		  //float preScore=this.getPredictValue();
+		  if(this.getPredictValue()>it.getPredictValue()) return -1;
+		  else  if(this.getPredictValue()<it.getPredictValue()) return 1;
+		  /**
 		  if(preScore<0)
 		  {
-			  //xgboost predict first
-			  if(this.getPredictValue()>it.getPredictValue()+0.1) return -1;
-			  else  if(this.getPredictValue()+0.1<it.getPredictValue()) return 1;
-			    
+			 
+			  
 			  if(this.getTRValue()>it.getTRValue()) return -1;
 			  else if(this.getTRValue()<it.getTRValue()) return 1;
 			  
@@ -128,8 +129,14 @@ public class Q2Item implements Comparable<Q2Item>{
 			  return -1;
 			  
 		  }
-		  if(this.getPredictValue()>it.getPredictValue()) return -1;
-		  else  if(this.getPredictValue()<it.getPredictValue()) return 1;
+		  */
+		  
+		  //translation model
+		  if(this.getTRValue()>it.getTRValue()) return -1;
+		  else if(this.getTRValue()<it.getTRValue()) return 1;
+		  
+		  if(this.getW2VValue()>it.getW2VValue()) return -1;
+		  else if(this.getPredictValue()<it.getW2VValue()) return 1;
 		  
 		//translation-based language model
 		  if(this.getTransLMValue()>it.getTransLMValue()) return 1;
@@ -140,15 +147,7 @@ public class Q2Item implements Comparable<Q2Item>{
 		  
 		  if(this.getLCSValue()>it.getLCSValue()) return -1;
 		  else if(this.getLCSValue()<it.getLCSValue()) return 1;
-		  //translation model
-		  if(this.getTRValue()>it.getTRValue()) return -1;
-		  else if(this.getTRValue()<it.getTRValue()) return 1;
-		  
-		  if(this.getW2VValue()>it.getW2VValue()) return -1;
-		  else if(this.getPredictValue()<it.getW2VValue()) return 1;
-		  
 		 
-		  
 		  return -1;
 	   }
 }

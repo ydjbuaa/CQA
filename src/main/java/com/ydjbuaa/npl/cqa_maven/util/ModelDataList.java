@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class ModelDataList {
@@ -152,6 +153,46 @@ public class ModelDataList {
 		testBWriter.close();
 		gtrainBWriter.close();
 		gtestBWriter.close();
+	}
+	public  void genTrainData(String path) throws IOException, FileNotFoundException
+	{
+		BufferedWriter trainBWriter=new BufferedWriter(
+				new OutputStreamWriter(
+						new FileOutputStream(path+"/baidu.train"), "UTF-8"));
+		BufferedWriter gtrainBWriter=new BufferedWriter(
+				new OutputStreamWriter(
+						new FileOutputStream(path+"/baidu.train.group"), "UTF-8"));
+		if(trainList==null)  trainList=new ArrayList<Q2Item>(); 
+		else trainList.clear();
+		int trainGroupID=-1;
+		int trainGroupLen=0;
+		for(int i=0;i<data_size;i++)
+		{
+			Q2Item iItem=new Q2Item(labelList[i], queryList[i], questionList[i], qidList[i], modelValueMatrix[i]);
+			trainList.add(iItem);
+			trainBWriter.write(labelList[i]+"");
+			if(trainGroupID!=qidList[i])  
+			{
+				if(trainGroupLen>0) gtrainBWriter.write(trainGroupLen+"\n");
+				trainGroupID=qidList[i];
+				trainGroupLen=1;
+			}
+			else trainGroupLen++;
+			//trainBWriter.write(labelList[i]+" qid:"+qidList[i]);
+			for(int k=0;k<MODEL_SIZE;k++)
+			{
+				//if(k==1||k==3) continue; //ignore bm 25 model and edit distance
+				if(k>=8) continue;
+				trainBWriter.write(" "+(k+1)+":"+modelValueMatrix[i][k]);
+			}
+			trainBWriter.write("\n");
+		}
+		//flush the last group length
+		if(trainGroupLen>0) gtrainBWriter.write(trainGroupLen+"\n");
+	//	System.err.println("train list size\t"+trainList.size()+"\ttest list size:\t"+testList.size());
+		//close writer stream
+		trainBWriter.close();
+		gtrainBWriter.close();
 	}
 	public ArrayList<Q2Item> getTrainList()
 	{

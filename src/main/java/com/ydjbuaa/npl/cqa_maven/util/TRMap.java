@@ -83,7 +83,8 @@ public class TRMap {
 			 //load tr map
 			 initTRMap();
 		 }
-    	 //if(srcWord.equals(trgWord)) return 1f;
+    	 if(srcWord.equals(trgWord)) return 1f;
+    	 
     	 if(srcVcbMap.containsKey(srcWord)&&trgVcbMap.containsKey(trgWord))
     	 {
     		 int srcInt=srcVcbMap.get(srcWord);

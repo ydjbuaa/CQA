@@ -1,5 +1,6 @@
 package com.ydjbuaa.npl.cqa.driver;
 
+import java.io.IOException;
 import java.util.*;
 
 import com.ydjbuaa.npl.xgboost.XgBoost;
@@ -13,10 +14,35 @@ import com.ydjbuaa.npl.cqa.models.*;
 
 public class CQADriver {
 
-	final static int MODEL_NUM = 10;
-	final static int RETURN_NUM = 20;
+	final static int MODEL_NUM = 8;
+	//final static int RETURN_NUM = 20;
 
+	private static float [] getModelFeuatures(String[] querys,String [] qtexts) throws IOException
+	{
+		float s1 = LanguageModel.getLMScorewithNormalization(querys, qtexts);
+		float s2 = BM25.getBMScore(querys, qtexts);
+		float s3 = LCS.getLCSScore(querys, qtexts);
+		float s4 = LD.getLDScore(querys, qtexts);
+		float s5 = TranslationModel.getTRScorewithNormalization(querys, qtexts);
+		float s6 = TransLM.getTransLMScorewithNormalization(querys, qtexts);
+		float s7 = NCross.getTopNCrossScore(querys, qtexts);
+		float s8 = Word2Vec.getW2CScore(querys, qtexts);
+		
+		float [] modelFeatures=new float[MODEL_NUM];
+		modelFeatures[0]=s1;
+		modelFeatures[1]=s2;
+		modelFeatures[2]=s3;
+		modelFeatures[3]=s4;
+		modelFeatures[4]=s5;
+		modelFeatures[5]=s6;
+		modelFeatures[6]=s7;
+		modelFeatures[7]=s8;
+	//	modelFeatures[0]=s1;
+		
+	     return modelFeatures;
+	}
 	public static List<Q2Item> getQueryResults(String query) throws Exception {
+		
 		// get word-seg results
 		String[] querys = AnsjWordSeg.getWordsSegStrs(query);
 
@@ -25,7 +51,7 @@ public class CQADriver {
 		Iterator<SolrDocument> it = resDocs.iterator();
 
 		int index = 0;
-
+		float[][] features = new float[resDocs.size()][MODEL_NUM];
 		// System.out.println("Solr Query Result Size:\t"+resDocs.size());
 		ArrayList<Q2Item> retriList = new ArrayList<Q2Item>();
 		// return solr-retrievaled results directly
@@ -34,10 +60,22 @@ public class CQADriver {
 
 			String qtext = solrdoc.getFieldValue("qtext").toString();
 			String atext = solrdoc.getFieldValue("atext").toString();
-			Q2Item q2Item = new Q2Item(1, query, qtext, 1, new float[MODEL_NUM]);
+			float [] modelFeature=getModelFeuatures(querys, AnsjWordSeg.getWordsSegStrs(qtext));
+			Q2Item q2Item = new Q2Item(1, query, qtext, 1,modelFeature);
+			
 			q2Item.setAnswerStr(atext);
 			retriList.add(q2Item);
+			
+			features[index]=modelFeature;
+			index++;
 		}
+		// Xgboost predict and set predict results
+		float[] fpres = XgBoost.predict(features);
+		IEvaluation.setScores(retriList, fpres);
+		Collections.sort(retriList);
+		return retriList;
+		
+		/**
 		if (true)
 			return retriList;
 		float[][] features = new float[resDocs.size()][MODEL_NUM];
@@ -88,6 +126,7 @@ public class CQADriver {
 			returnList.add(rankList.get(i));
 		}
 		return returnList;
+		*/
 	}
 
 	public static void main(String[] args) throws Exception {

@@ -30,6 +30,7 @@ public class AnsjWordSeg {
 	private static void initStopWordsList() throws IOException
 	{
 		
+		//FileInputStream fi=new FileInputStream("./library/stop-words-list/my-stop-words-zh.dic");
 		FileInputStream fi=new FileInputStream("./library/stop-words-list/my-stop-words-zh-new.dic");
 		BufferedReader br=new BufferedReader(new InputStreamReader(fi,"UTF-8"));
 	    String line=null;

@@ -6,7 +6,7 @@ public class LanguageModel {
 	
 	 //smoothing paramater
 	 // final static float paraSmoothing=0.1f;
-     private static float paraSmoothing=0.6f;
+     private static float paraSmoothing=0.90f;
     //words tf table in the collection
      private static HashMap<String,Double>gWordsTFMap=null;
      public static void setPara(float pa)
@@ -68,10 +68,10 @@ public class LanguageModel {
  	        {
  	        	p=Double.MIN_VALUE;
  	        }
- 	        //System.err.println(word+":\t"+p);
+ 	        System.err.println(word+":\t"+p);
  	        score+=Math.log(p);
  		}
- 		//System.err.println("Score:"+score);
+ 		System.err.println("Score:"+score);
  		return score;
      }
      public static float getLMScorewithNormalization(String[] querys,String[] qtexts)

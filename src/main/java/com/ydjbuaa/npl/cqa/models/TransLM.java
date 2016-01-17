@@ -7,8 +7,8 @@ public class TransLM {
 	
 	// Translation-based language model parameters
 	
-	private static float paraA=0.44f;
-	private static float paraB=0.5f;
+	private static float paraA=0.80f;
+	private static float paraB=0.60f;
 	
 	public static float getTransLMScore(String []querys,String [] questions)
 	{

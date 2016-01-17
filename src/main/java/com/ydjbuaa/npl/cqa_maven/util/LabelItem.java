@@ -48,6 +48,6 @@ public class LabelItem implements Comparable<LabelItem>{
 	  {
 		  return 1;
 	  }
-	  return 1;
+	  return -1;
    }
 }

@@ -13,11 +13,18 @@ public class TestDriver {
 		
 		//generate new tf-idf map
 		System.out.println("test tf-idf");
-		TF_IDFTrain.train(args[0],args[1]);
+		//TF_IDFTrain.train(args[0],args[1]);
 		String  str1="如何用笔记本建立wifi  XP系统";
 		String  str2="如何通过笔记本（xp系统）建立WLAN（WIFI）接口，供手机上网？";
+		String  str3="北京哪里好玩？";
 		String  [] querys=AnsjWordSeg.getWordsSegStrs(str1);
 		String  [] qtexts=AnsjWordSeg.getWordsSegStrs(str2);
+		String  [] ss=AnsjWordSeg.getWordsSegStrs(str3);
+		for (String s:ss)
+		{
+			System.out.print(s+"\t");
+		}
+		System.out.println("");
 		System.out.println(LanguageModel.getLMScorewithNormalization(querys, qtexts));
 	}
 	public static boolean reWriteFileByBinaryWay(String srcPath,String dstPath)

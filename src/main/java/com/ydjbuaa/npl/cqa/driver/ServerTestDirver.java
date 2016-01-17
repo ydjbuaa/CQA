@@ -11,6 +11,7 @@ import java.util.Iterator;
 import com.ydjbuaa.npl.cqa.models.LanguageModel;
 import com.ydjbuaa.npl.cqa.models.NCross;
 import com.ydjbuaa.npl.cqa.models.NerLM;
+import com.ydjbuaa.npl.cqa.models.TF_IDFTrain;
 import com.ydjbuaa.npl.cqa.models.TransLM;
 import com.ydjbuaa.npl.cqa.models.TranslationModel;
 import com.ydjbuaa.npl.cqa_maven.util.BoosterParams;
@@ -27,6 +28,7 @@ public class ServerTestDirver {
 	// system default path
 	private static String srcTestDataPath = "./data/baidu.data";
 	private static String randomTestDataPath = "./data/baidu_random.data";
+	//private static String modelDataPath = "./data/model_exp_random.dat";
 	private static String modelDataPath = "./data/model_exp_random_stop_new.dat";
 	// private static String trPath = "./library/tr/";
 	private static String workPath = "./work/";
@@ -36,13 +38,14 @@ public class ServerTestDirver {
 		// TODO Auto-generated method stub
 
 		// random the baidu test data
-		// CQAFileReader.randomTestData(srcTestDataPath, randomTestDataPath);
-
+		//CQAFileReader.randomTestData(srcTestDataPath, randomTestDataPath);
+		
 		systemSet(args);
 		// save data into file
 		if (generateFlag)
 			IEvaluation.genTestData(randomTestDataPath, modelDataPath);
-
+		
+		//testBasicModels();
 		//testLM();
 		//testBM25();
 		//testLCS_ED();
@@ -54,9 +57,9 @@ public class ServerTestDirver {
 		//testNerLM();
 		// testRankSVM();
 		// testRankSVMwithParams();
-		//testXgBoostRank();
-		 testXgboostWithParams();
-		// genModel();
+			//testXgBoostRank();
+		testXgboostWithParams();
+		 //genModel();
 		System.err.println("Test Over !");
 	}
 
@@ -79,26 +82,31 @@ public class ServerTestDirver {
 	}
 
 	private static void genModel() throws Exception {
-		ArrayList<LabelItem> list = CQAFileReader.getLabelList(randomTestDataPath);
+		ModelDataList dataList = new ModelDataList(modelDataPath);
 		BoosterParams param = new BoosterParams();
-		param.put("eta", 0.14f);
-		param.put("max_depth", 3);
-		param.put("gamma", 100f);
-		param.put("min_child_weight", 1f);
+		param.put("eta", 0.2f);
+		param.put("max_depth", 10);
+		param.put("gamma", 20.0f);
+		param.put("min_child_weight", 3.0f);
 		param.put("objective", "rank:pairwise");
-		param.put("num_round", 4);
+		param.put("num_round", 56);
 
-		String baiduworkPath = "./xgboost/baidu.model";
-		String dataPath = "./xgboost/baidu.dat";
-		XgBoost.genTrainAndGroupFile(list, dataPath);
-
-		// train
-		XgBoost.train(workPath, dataPath, baiduworkPath, param);
-		float[] tpres = XgBoost.predict(workPath, dataPath, baiduworkPath, param);
-
-		// float tmap = IEvaluation.culMAP(list, tpres);
-		// System.out.println("Final MAP:\t"+tmap);
-
+		String baiduModelPath = "./xgboost/baidu.model";
+		String path="./xgboost/";
+		String trainPath=path+"baidu.train";
+		dataList.genTrainData(path);
+		
+		XgBoost.train(workPath, trainPath, baiduModelPath, param);
+		// xgboost run predict
+		float[] t_pres = XgBoost.predict(workPath, trainPath, baiduModelPath, param);
+		ArrayList<Q2Item> trainList = dataList.getTrainList();
+		ArrayList<Q2Item> testList = dataList.getTestList();
+		// set scores
+		IEvaluation.setScores(trainList, t_pres);
+		// cul MAP
+		float train_map = IEvaluation.culMAP(trainList, EVAL_METRIC.MAP);
+		System.err.println("\t Train Map:\t" + train_map);
+		
 	}
 
 	private static void setOutStream(String path) throws FileNotFoundException {
@@ -136,10 +144,10 @@ public class ServerTestDirver {
 		BoosterParams params = new BoosterParams();
 		params.put("eta", 0.3f);
 		params.put("max_depth", 8);
-		params.put("gamma", 26f);
+		params.put("gamma", 22f);
 		params.put("min_child_weight", 1f);
 		params.put("objective", "rank:pairwise");
-		params.put("num_round", 24);
+		params.put("num_round", 45);
 
 		// System.err.println("Data Size:" + list.size());
 		int block_num = 4;
@@ -218,17 +226,17 @@ public class ServerTestDirver {
 		ModelDataList dataList = new ModelDataList(modelDataPath);
 		ArrayList<BoosterParams> paramList = new ArrayList<BoosterParams>();
 
-		float eta = 0.1f;
-		while (eta <= 0.3f) {
-			float gamma = 20f;
-			while (gamma <= 30f) {
-				int max_depth = 8;
-				while (max_depth <= 8) {
-					int num_round = 5;
-					while (num_round <= 40) {
+		float eta = 0.15f;
+		while (eta <= 0.17f) {
+			float gamma = 24f;
+			while (gamma <= 26f) {
+				int max_depth = 15;
+				while (max_depth <=18) {
+					int num_round = 70;
+					while (num_round <= 80) {
 						// set the min_child_weight to 0.1
-						float min_child_weight = 1.0f;
-						while (min_child_weight <= 1.0f) {
+						float min_child_weight = 4.0f;
+						while (min_child_weight <=5.0f) {
 							BoosterParams param = new BoosterParams();
 							param.put("eta", eta);
 							param.put("max_depth", max_depth);
@@ -237,15 +245,15 @@ public class ServerTestDirver {
 							param.put("num_round", num_round);
 							param.put("objective", "rank:pairwise");
 							paramList.add(param);
-							min_child_weight += 0.5f;
+							min_child_weight += 0.2f;
 						}
 						num_round += 2;
 					}
 					max_depth += 1;
 				}
-				gamma += 2d;
+				gamma += 0.02d;
 			}
-			eta += 0.05d;
+			eta += 0.002d;
 		}
 		// set block size and block num
 		int block_num = 4;
@@ -318,13 +326,11 @@ public class ServerTestDirver {
 		ArrayList<LabelItem> list = CQAFileReader.getLabelList(randomTestDataPath);
 		ArrayList<Float> paList = new ArrayList<Float>();
 		float pa = 0.001f;
-		while (pa < 1f) {
+		while (pa < 1000f) {
 			paList.add(pa);
-			pa += 0.002f;
-		}
-		while (pa < 10f) {
-			paList.add(pa);
-			pa += 0.05f;
+			paList.add(pa*2);
+			paList.add(pa*5);
+			pa *= 10f;
 		}
 		int block_num = 4;
 		int block_size = list.size() / block_num;
@@ -370,6 +376,7 @@ public class ServerTestDirver {
 	}
 
 	public static void testLM() throws Exception {
+		//ArrayList<LabelItem> list = CQAFileReader.getLabelList(srcTestDataPath);
 		ArrayList<LabelItem> list = CQAFileReader.getLabelList(randomTestDataPath);
 		System.out.println("MAP(LM):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.LM));
 	
@@ -419,7 +426,19 @@ public class ServerTestDirver {
 		}
 		System.out.println("MAP(NerCross):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.NerCross));
 	}
+	public static void testBasicModels() throws Exception
+	{
+		ArrayList<LabelItem> list = CQAFileReader.getLabelList(randomTestDataPath);
+		System.out.println("MAP(LM):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.LM));
+		//System.out.println("MAP(BM25):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.BM25));
+		//System.out.println("MAP(LCS):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.LCS));
+		//System.out.println("MAP(ED):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.LD));
+		System.out.println("MAP(TR):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.TR));
+		System.out.println("MAP(TransLM):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.TransLM));
+		//System.out.println("MAP@Word2Vec:\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.Word2Vec));
+		//System.out.println("MAP(TopNCorss):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.NCross));
 
+	}
 	private static void testTopNCross() throws Exception {
 		ArrayList<LabelItem> list = CQAFileReader.getLabelList(randomTestDataPath);
 		System.out.println("MAP(TopNCorss):\t" + IEvaluation.culMAP(list, IEvaluation.ModelType.NCross));
